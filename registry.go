@@ -52,7 +52,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	appID := m[1]
-	c.Infof(r.UserAgent())
 	if !strings.Contains(appID, "isumm") && !strings.Contains(appID, "~dev") {
 		c.Errorf("Invalid UserAgent: %s", r.UserAgent())
 		http.Error(w, "Bad Request.", http.StatusBadRequest)
