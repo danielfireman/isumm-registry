@@ -16,7 +16,7 @@ const (
 	entityName     = "Instances"
 )
 
-var appIDPattern = regexp.MustCompile(`appid: (.*))`)
+var appIDPattern = regexp.MustCompile(`appid: (.*)\)`)
 
 func init() {
 	http.HandleFunc("/register", Register)
