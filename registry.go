@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+	"time"
 
 	"appengine"
 	"appengine/datastore"
@@ -23,7 +24,8 @@ func init() {
 }
 
 type Instance struct {
-	Version string `datastore:"version"`
+	Version   string `datastore:"version"`
+	Timestamp int64  `datastore:"timestamp"`
 }
 
 type RegisterResponse struct {
@@ -64,8 +66,11 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Bad Request.", http.StatusBadRequest)
 		return
 	}
+	e := &Instance{
+		Version:   version,
+		Timestamp: time.Now().UTC().UnixNano(),
+	}
 	k := datastore.NewKey(c, entityName, appID, 0, nil)
-	e := &Instance{Version: version}
 	if _, err := datastore.Put(c, k, e); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
